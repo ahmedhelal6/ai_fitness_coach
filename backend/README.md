@@ -20,3 +20,10 @@ Newtonsoft.Json==13.0.4
 
 # --- API Documentation ---
 Swashbuckle.AspNetCore==6.5.0
+
+## Live API Documentation
+
+Swagger UI:
+http://aifitnesscoach.tryasp.net/swagger/index.html
+
+Use Swagger to test endpoints directly from the browser.
