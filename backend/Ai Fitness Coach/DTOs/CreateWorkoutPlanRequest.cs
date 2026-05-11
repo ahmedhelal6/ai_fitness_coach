@@ -3,6 +3,6 @@
     public class CreateWorkoutPlanRequest
     {
         public string? Name { get; set; }
-        public List<int>? ExerciseIds { get; set; } // List of exercise IDs they selected
+        public List<int>? ExerciseIds { get; set; }
     }
 }

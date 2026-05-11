@@ -23,15 +23,12 @@ namespace Ai_Fitness_Coach.Models
         public int? Age { get; set; }
         [MaxLength(50)]
         public string? Gender { get; set; } = string.Empty;
-        // Refresh Token fields
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
-        // Email Verification fields
         public bool IsEmailVerified { get; set; } = false;
         public string? VerificationOtp { get; set; }
         public DateTime? VerificationOtpExpiry { get; set; }
 
-        // Password Reset fields
         public string? PasswordResetOtp { get; set; }
         public DateTime? PasswordResetOtpExpiry { get; set; }
         [Column(TypeName = "nvarchar(50)")]

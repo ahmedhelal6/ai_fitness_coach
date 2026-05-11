@@ -14,7 +14,7 @@ namespace Ai_Fitness_Coach.Models
         public string Equipment { get; set; } = string.Empty;
 
         [Required, MaxLength(100)]
-        public string ExerciseType { get; set; } = string.Empty; // Strength, Cardio, etc.
+        public string ExerciseType { get; set; } = string.Empty;
 
         public string? ImageUrl { get; set; }
         public string? VideoUrl { get; set; }

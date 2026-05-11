@@ -59,7 +59,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 builder.Services.AddHttpClient<IMealService, MealService>();
-//builder.Services.AddScoped<IMealService, MealService>();
+builder.Services.AddHttpClient<IChatService, ChatService>();
 // 5. Authentication & JWT Setup
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

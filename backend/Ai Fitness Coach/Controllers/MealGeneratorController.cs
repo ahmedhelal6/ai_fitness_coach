@@ -1,51 +1,51 @@
-﻿using Ai_Fitness_Coach.Data;
-using Ai_Fitness_Coach.DTOs;
-using Ai_Fitness_Coach.Services;
+﻿using Ai_Fitness_Coach.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
-[ApiController]
-[Route("api/[controller]")]
-public class MealGeneratorController : ControllerBase
+namespace Ai_Fitness_Coach.Controllers
 {
-    private readonly IMealService _aiService;
-    private readonly ApplicationDbContext _context;
-
-    public MealGeneratorController(IMealService aiService, ApplicationDbContext context)
-    {
-        _aiService = aiService;
-        _context = context;
-    }
+    [ApiController]
+    [Route("api/[controller]")]
     [Authorize]
-    [HttpGet("generate-plan")]
-    public async Task<IActionResult> GetPlan()
+    public class MealGeneratorController : ControllerBase
     {
-        try
+        private readonly IMealService _mealService;
+
+        public MealGeneratorController(IMealService mealService)
         {
-            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
-            if (string.IsNullOrEmpty(userIdClaim))
-                return Unauthorized("User ID not found in token.");
-
-            var userId = int.Parse(userIdClaim);
-            var user = await _context.Users.FindAsync(userId);
-
-            if (user == null)
-                return NotFound("User not found in database.");
-
-            var plan = await _aiService.GenerateFullDayMealPlanAsync(user);
-
-            return Ok(plan);
+            _mealService = mealService;
         }
-        catch (Exception ex)
+
+        private int GetUserId()
         {
-            return StatusCode(500, new
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.TryParse(userIdStr, out int userId) ? userId : 0;
+        }
+
+        [HttpGet("generate-plan")]
+        public async Task<IActionResult> GetPlan()
+        {
+            var userId = GetUserId();
+            if (userId == 0) return Unauthorized();
+
+            try
             {
-                message = ex.Message,
-                stackTrace = ex.StackTrace
-            });
+                var plan = await _mealService.GenerateFullDayMealPlanAsync(userId);
+                return Ok(plan);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
     }
 }

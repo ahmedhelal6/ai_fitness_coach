@@ -10,7 +10,7 @@ namespace Ai_Fitness_Coach.Models
         [Key]
         public int Id { get; set; }
 
-        public int? WorkoutPlanId { get; set; } // Nullable in case they start an ad-hoc workout
+        public int? WorkoutPlanId { get; set; }
         [ForeignKey("WorkoutPlanId")]
         public WorkoutPlan? WorkoutPlan { get; set; }
 
@@ -19,7 +19,7 @@ namespace Ai_Fitness_Coach.Models
         [ForeignKey("UserId")]
         public User User { get; set; } = null!;
 
-        public bool IsCompleted { get; set; } = false; // To track if they hit "SAVE" on the session
+        public bool IsCompleted { get; set; } = false;
         [Required]
         public DateTime StartTime { get; set; } = DateTime.UtcNow;
         public ICollection<WorkoutSet> WorkoutSets { get; set; } = new HashSet<WorkoutSet>();
